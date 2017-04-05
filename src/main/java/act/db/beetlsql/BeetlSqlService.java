@@ -49,9 +49,9 @@ public class BeetlSqlService extends SqlDbService {
         ConnectionSource conn = ConnectionSourceHelper.getSingle(dataSource);
         DBStyle style = configureDbStyle();
         SQLLoader loader = configureLoader();
-        NameConversion nm = configureNamingConvetion();
+        NameConversion nm = configureNamingConvention();
         Interceptor[] ins = configureInterceptor();
-        beetlSql = new SQLManager(style, loader, conn, nm,ins);
+        beetlSql = new SQLManager(style, loader, conn, nm, ins);
     }
 
     @Override
@@ -66,12 +66,12 @@ public class BeetlSqlService extends SqlDbService {
 
     @Override
     public <DAO extends Dao> DAO defaultDao(Class<?> aClass) {
-        return null;
+        throw E.unsupport("BeetlSql does not support DAO. Please use mapper instead");
     }
 
     @Override
     public <DAO extends Dao> DAO newDaoInstance(Class<DAO> aClass) {
-        return null;
+        throw E.unsupport("BeetlSql does not support DAO. Please use mapper instead");
     }
 
     @Override
@@ -99,7 +99,7 @@ public class BeetlSqlService extends SqlDbService {
         });
     }
 
-    private NameConversion configureNamingConvetion() {
+    private NameConversion configureNamingConvention() {
         String s = this.config.rawConf.get("beetlsql.nc");
         if (null != s) {
             return Act.getInstance(s);
@@ -118,14 +118,14 @@ public class BeetlSqlService extends SqlDbService {
         }
         return new ClasspathLoader(loaderPath);
     }
-    
+
     private Interceptor[] configureInterceptor() {
         String debug = this.config.rawConf.get("interceptor.debug");
         if (null == debug) {
             return new Interceptor[0];
         }
         boolean isDebug = Boolean.parseBoolean(debug);
-        return isDebug?new Interceptor[]{new DebugInterceptor()}:new Interceptor[0];
+        return isDebug ? new Interceptor[]{new DebugInterceptor()} : new Interceptor[0];
     }
 
     private DBStyle configureDbStyle() {
