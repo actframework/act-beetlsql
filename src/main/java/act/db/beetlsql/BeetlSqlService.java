@@ -11,6 +11,7 @@ import org.beetl.sql.core.db.*;
 import org.beetl.sql.core.mapper.BaseMapper;
 import org.beetl.sql.core.mapper.DefaultMapperBuilder;
 import org.beetl.sql.core.mapper.MapperJavaProxy;
+import org.beetl.sql.ext.DebugInterceptor;
 import org.osgl.$;
 import org.osgl.inject.Genie;
 import org.osgl.util.E;
@@ -29,7 +30,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class BeetlSqlService extends SqlDbService {
 
-    public static final String DEF_LOADER_PATH = "/beetlSql";
+    public static final String DEF_LOADER_PATH = "/sql";
 
     private SQLManager beetlSql;
     private ConcurrentMap<Class, BaseMapper> mapperMap = new ConcurrentHashMap<>();
@@ -49,8 +50,8 @@ public class BeetlSqlService extends SqlDbService {
         DBStyle style = configureDbStyle();
         SQLLoader loader = configureLoader();
         NameConversion nm = configureNamingConvetion();
-
-        beetlSql = new SQLManager(style, loader, conn, nm);
+        Interceptor[] ins = configureInterceptor();
+        beetlSql = new SQLManager(style, loader, conn, nm,ins);
     }
 
     @Override
@@ -99,7 +100,7 @@ public class BeetlSqlService extends SqlDbService {
     }
 
     private NameConversion configureNamingConvetion() {
-        String s = this.config.rawConf.get("naming_convention");
+        String s = this.config.rawConf.get("beetlsql.nc");
         if (null != s) {
             return Act.getInstance(s);
         }
@@ -116,6 +117,15 @@ public class BeetlSqlService extends SqlDbService {
             loaderPath = DEF_LOADER_PATH;
         }
         return new ClasspathLoader(loaderPath);
+    }
+    
+    private Interceptor[] configureInterceptor() {
+        String debug = this.config.rawConf.get("interceptor.debug");
+        if (null == debug) {
+            return new Interceptor[0];
+        }
+        boolean isDebug = Boolean.parseBoolean(debug);
+        return isDebug?new Interceptor[]{new DebugInterceptor()}:new Interceptor[0];
     }
 
     private DBStyle configureDbStyle() {
