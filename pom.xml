@@ -37,8 +37,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <git.url>git@github.com:actframework/act-beetlsql.git</git.url>
-    <act.version>1.1.0-SNAPSHOT</act.version>
-    <act-sql.version>1.0.0-SNAPSHOT</act-sql.version>
+    <act.version>1.1.0</act.version>
+    <act-sql-common.version>1.0.0</act-sql-common.version>
     <beetlsql.version>2.8.8</beetlsql.version>
     <mockito-core.version>2.7.0</mockito-core.version>
     <HikariCP.version>2.6.1</HikariCP.version>
@@ -145,7 +145,7 @@
     <dependency>
       <groupId>org.actframework</groupId>
       <artifactId>act-sql-common</artifactId>
-      <version>${act-sql.version}</version>
+      <version>${act-sql-common.version}</version>
     </dependency>
 
     <dependency>
