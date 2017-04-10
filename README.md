@@ -1,3 +1,3 @@
-#BEETLSQL Plugin for ActFramework
+# BeetlSQL Plugin for ActFramework
 
-Beetlsql is a ...
+Allow ActFramework application to use [BeetlSQL](http://ibeetl.com/)
