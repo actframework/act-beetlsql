@@ -11,6 +11,8 @@ import org.beetl.sql.core.annotatoin.Table;
 import org.beetl.sql.core.mapper.BaseMapper;
 import org.osgl.$;
 import org.osgl.exception.UnexpectedException;
+import org.osgl.logging.LogManager;
+import org.osgl.logging.Logger;
 import org.osgl.util.Generics;
 
 import javax.inject.Inject;
@@ -26,6 +28,8 @@ import static act.app.DbServiceManager.dbId;
  */
 @Singleton
 public class BeetlClassFinder {
+
+    private static final Logger LOGGER = LogManager.get(BeetlClassFinder.class);
 
     private final EntityClassRepository repo;
     private final App app;
@@ -49,12 +53,16 @@ public class BeetlClassFinder {
     @SubClassFinder(noAbstract = false, callOn = AppEventId.PRE_START)
     public void foundMapper(Class<? extends BaseMapper> mapperClass) {
         DbServiceManager dbServiceManager = app.dbServiceManager();
-        Class<?> modelClass = modelClass(mapperClass);
-        DbService dbService = dbServiceManager.dbService(dbId(modelClass));
-        if (dbService instanceof BeetlSqlService) {
-            ((BeetlSqlService) dbService).prepareMapperClass(mapperClass, modelClass);
-        } else {
-            throw new UnexpectedException("mapper class cannot be landed to a BeetlSqlService");
+        try {
+            Class<?> modelClass = modelClass(mapperClass);
+            DbService dbService = dbServiceManager.dbService(dbId(modelClass));
+            if (dbService instanceof BeetlSqlService) {
+                ((BeetlSqlService) dbService).prepareMapperClass(mapperClass, modelClass);
+            } else {
+                throw new UnexpectedException("mapper class cannot be landed to a BeetlSqlService");
+            }
+        } catch (RuntimeException e) {
+            LOGGER.warn(e, "Error registering mapping class: %s", mapperClass);
         }
     }
 
