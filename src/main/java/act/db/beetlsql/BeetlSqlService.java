@@ -44,8 +44,7 @@ public class BeetlSqlService extends SqlDbService {
     }
 
     @Override
-    protected void dataSourceInitialized() {
-        DataSource dataSource = dataSource();
+    protected void dataSourceProvided(DataSource dataSource) {
         ConnectionSource conn = ConnectionSourceHelper.getSingle(dataSource);
         DBStyle style = configureDbStyle();
         SQLLoader loader = configureLoader();
