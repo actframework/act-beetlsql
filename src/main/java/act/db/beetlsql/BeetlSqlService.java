@@ -3,6 +3,7 @@ package act.db.beetlsql;
 import act.Act;
 import act.app.App;
 import act.db.Dao;
+import act.db.sql.DataSourceConfig;
 import act.db.sql.SqlDbService;
 import act.db.sql.util.NamingConvention;
 import org.beetl.sql.core.*;
@@ -34,6 +35,7 @@ public class BeetlSqlService extends SqlDbService {
 
     private SQLManager beetlSql;
     private ConcurrentMap<Class, BaseMapper> mapperMap = new ConcurrentHashMap<>();
+    private ConnectionSource connectionSource;
 
     public BeetlSqlService(String dbId, App app, Map<String, String> config) {
         super(dbId, app, config);
@@ -44,13 +46,13 @@ public class BeetlSqlService extends SqlDbService {
     }
 
     @Override
-    protected void dataSourceProvided(DataSource dataSource) {
-        ConnectionSource conn = ConnectionSourceHelper.getSingle(dataSource);
-        DBStyle style = configureDbStyle();
+    protected void dataSourceProvided(DataSource dataSource, DataSourceConfig dsConfig) {
+        connectionSource = ConnectionSourceHelper.getSingle(dataSource);
+        DBStyle style = configureDbStyle(dsConfig);
         SQLLoader loader = configureLoader();
         NameConversion nm = configureNamingConvention();
         Interceptor[] ins = configureInterceptor();
-        beetlSql = new SQLManager(style, loader, conn, nm, ins);
+        beetlSql = new SQLManager(style, loader, connectionSource, nm, ins);
     }
 
     @Override
@@ -76,6 +78,14 @@ public class BeetlSqlService extends SqlDbService {
     @Override
     public Class<? extends Annotation> entityAnnotationType() {
         return Table.class;
+    }
+
+    @Override
+    protected void releaseResources() {
+        if (_logger.isDebugEnabled()) {
+            _logger.debug("beetsql shutdown: %s", id());
+        }
+        super.releaseResources();
     }
 
     BaseMapper mapper(Class modelClass) {
@@ -127,14 +137,14 @@ public class BeetlSqlService extends SqlDbService {
         return isDebug ? new Interceptor[]{new DebugInterceptor()} : new Interceptor[0];
     }
 
-    private DBStyle configureDbStyle() {
+    private DBStyle configureDbStyle(DataSourceConfig dsConfig) {
         Map<String, String> conf = this.config.rawConf;
         String style = conf.get("platform");
         if (null == style) {
             style = conf.get("style");
         }
         if (null == style) {
-            style = this.config.dataSourceConfig.url;
+            style = dsConfig.url;
         }
         if (S.notBlank(style)) {
             style = style.trim().toLowerCase();

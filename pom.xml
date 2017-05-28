@@ -18,6 +18,9 @@
 ********************************************
 *            version history
 ********************************************
+1.2.0
+* update to act-1.4.0
+* update to act-sql-common-1.1.0
 
 1.1.1
 * update beetlsql version
@@ -37,7 +40,7 @@
   <groupId>org.actframework</groupId>
   <artifactId>act-beetlsql</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.1a-SNAPSHOT</version>
+  <version>1.2.0-SNAPSHOT</version>
 
   <name>ACT Beetlsql</name>
   <description>The Ebean Plugin for Actframework SQL database access</description>
@@ -47,12 +50,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <git.url>git@github.com:actframework/act-beetlsql.git</git.url>
-    <act.version>1.1.2</act.version>
-    <act-sql-common.version>1.0.2</act-sql-common.version>
+    <act.version>1.4.0-SNAPSHOT</act.version>
+    <act-sql-common.version>1.1.0-SNAPSHOT</act-sql-common.version>
     <beetlsql.version>2.8.9</beetlsql.version>
     <mockito-core.version>2.7.0</mockito-core.version>
-    <HikariCP.version>2.6.1</HikariCP.version>
-    <druid.version>1.0.29</druid.version>
   </properties>
 
   <parent>
@@ -162,20 +163,6 @@
       <groupId>org.actframework</groupId>
       <artifactId>act</artifactId>
       <version>${act.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
-      <version>${HikariCP.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>druid</artifactId>
-      <version>${druid.version}</version>
       <scope>provided</scope>
     </dependency>
 
