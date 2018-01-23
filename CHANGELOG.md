@@ -1,5 +1,9 @@
 # Act BeetlSql Change Log
 
+1.3.1
+* catch up to act-1.6.5
+* update sql-common to 1.2.1
+
 1.3.0
 * catch up to sql-common-1.2.0
 * update to act-1.6.x
