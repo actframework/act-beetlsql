@@ -20,7 +20,7 @@
 
   <artifactId>act-beetlsql</artifactId>
   <packaging>jar</packaging>
-  <version>1.4.0</version>
+  <version>1.4.1-SNAPSHOT</version>
 
   <name>ACT Beetlsql</name>
   <description>The Ebean Plugin for Actframework SQL database access</description>
