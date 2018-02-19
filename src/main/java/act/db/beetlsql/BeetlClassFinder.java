@@ -20,9 +20,11 @@ package act.db.beetlsql;
  * #L%
  */
 
+import static act.app.DbServiceManager.dbId;
+
 import act.app.App;
 import act.app.DbServiceManager;
-import act.app.event.AppEventId;
+import act.app.event.SysEventId;
 import act.db.DbService;
 import act.db.EntityClassRepository;
 import act.util.AnnotatedClassFinder;
@@ -35,13 +37,11 @@ import org.osgl.logging.LogManager;
 import org.osgl.logging.Logger;
 import org.osgl.util.Generics;
 
+import java.lang.reflect.Type;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.Entity;
-import java.lang.reflect.Type;
-import java.util.List;
-
-import static act.app.DbServiceManager.dbId;
 
 /**
  * Find classes with annotation `Table`
@@ -70,7 +70,7 @@ public class BeetlClassFinder {
         repo.registerModelClass(modelClass);
     }
 
-    @SubClassFinder(noAbstract = false, callOn = AppEventId.PRE_START)
+    @SubClassFinder(noAbstract = false, callOn = SysEventId.PRE_START)
     public void foundMapper(Class<? extends BaseMapper> mapperClass) {
         DbServiceManager dbServiceManager = app.dbServiceManager();
         try {

@@ -102,8 +102,8 @@ public class BeetlSqlService extends SqlDbService {
 
     @Override
     protected void releaseResources() {
-        if (_logger.isDebugEnabled()) {
-            _logger.debug("beetsql shutdown: %s", id());
+        if (logger.isDebugEnabled()) {
+            logger.debug("beetsql shutdown: %s", id());
         }
         super.releaseResources();
     }
@@ -113,9 +113,10 @@ public class BeetlSqlService extends SqlDbService {
     }
 
     public void prepareMapperClass(Class<? extends BaseMapper> mapperClass, Class<?> modelClass) {
-        Object o = Proxy.newProxyInstance(mapperClass.getClassLoader(),
+        ClassLoader classLoader = app().classLoader();
+        Object o = Proxy.newProxyInstance(classLoader,
                 new Class<?>[]{mapperClass},
-                new MapperJavaProxy(new DefaultMapperBuilder(beetlSql), beetlSql, mapperClass));
+                new MapperJavaProxy(new DefaultMapperBuilder(beetlSql, classLoader), beetlSql, mapperClass));
         final BaseMapper mapper = $.cast(o);
         mapperMap.put(mapperClass, mapper);
         mapperMap.put(modelClass, mapper);

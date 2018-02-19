@@ -20,7 +20,7 @@
 
   <artifactId>act-beetlsql</artifactId>
   <packaging>jar</packaging>
-  <version>1.3.2-SNAPSHOT</version>
+  <version>1.4.0-SNAPSHOT</version>
 
   <name>ACT Beetlsql</name>
   <description>The Ebean Plugin for Actframework SQL database access</description>
@@ -29,13 +29,13 @@
   <parent>
     <groupId>org.actframework</groupId>
     <artifactId>parent</artifactId>
-    <version>1.6.5</version>
+    <version>1.7.0</version>
   </parent>
 
   <properties>
     <git.url>git@github.com:actframework/act-beetlsql.git</git.url>
-    <act-sql-common.version>1.2.1</act-sql-common.version>
-    <beetlsql.version>2.10.4</beetlsql.version>
+    <act-sql-common.version>1.3.0</act-sql-common.version>
+    <beetlsql.version>2.10.10</beetlsql.version>
   </properties>
 
   <scm>
