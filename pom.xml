@@ -35,7 +35,7 @@
   <properties>
     <git.url>git@github.com:actframework/act-beetlsql.git</git.url>
     <act-sql-common.version>1.3.0</act-sql-common.version>
-    <beetlsql.version>2.10.10</beetlsql.version>
+    <beetlsql.version>2.10.11</beetlsql.version>
   </properties>
 
   <scm>
