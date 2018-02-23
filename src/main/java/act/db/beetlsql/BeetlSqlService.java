@@ -73,6 +73,7 @@ public class BeetlSqlService extends SqlDbService {
         NameConversion nm = configureNamingConvention();
         Interceptor[] ins = configureInterceptor();
         beetlSql = new SQLManager(style, loader, connectionSource, nm, ins);
+        beetlSql.setEntityLoader(app().classLoader());
     }
 
     @Override
@@ -112,18 +113,18 @@ public class BeetlSqlService extends SqlDbService {
         return mapperMap.get(modelClass);
     }
 
-    public void prepareMapperClass(Class<? extends BaseMapper> mapperClass, Class<?> modelClass) {
+    public <MAPPER extends BaseMapper> void prepareMapperClass(Class<MAPPER> mapperClass, Class<?> modelClass) {
         ClassLoader classLoader = app().classLoader();
         Object o = Proxy.newProxyInstance(classLoader,
                 new Class<?>[]{mapperClass},
                 new MapperJavaProxy(new DefaultMapperBuilder(beetlSql, classLoader), beetlSql, mapperClass));
-        final BaseMapper mapper = $.cast(o);
+        final MAPPER mapper = $.cast(o);
         mapperMap.put(mapperClass, mapper);
         mapperMap.put(modelClass, mapper);
         Genie genie = Act.getInstance(Genie.class);
-        genie.registerProvider(mapperClass, new Provider() {
+        genie.registerProvider(mapperClass, new Provider<MAPPER>() {
             @Override
-            public Object get() {
+            public MAPPER get() {
                 return mapper;
             }
         });

@@ -35,6 +35,7 @@ import java.util.Map;
 /**
  * Responsible for init BeetlSql DB service
  */
+@SuppressWarnings("unused")
 public class BeetlSqlPlugin extends DbPlugin {
 
     @Override
