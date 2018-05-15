@@ -29,13 +29,13 @@
   <parent>
     <groupId>org.actframework</groupId>
     <artifactId>parent</artifactId>
-    <version>1.8.5</version>
+    <version>1.8.8-RC4</version>
   </parent>
 
   <properties>
     <git.url>git@github.com:actframework/act-beetlsql.git</git.url>
-    <act-sql-common.version>1.3.3</act-sql-common.version>
-    <beetlsql.version>2.10.18</beetlsql.version>
+    <act-sql-common.version>1.3.4-SNAPSHOT</act-sql-common.version>
+    <beetlsql.version>2.10.22</beetlsql.version>
   </properties>
 
   <scm>
