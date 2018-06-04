@@ -40,6 +40,7 @@ import org.osgl.util.S;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -66,19 +67,40 @@ public class BeetlSqlService extends SqlDbService {
     }
 
     @Override
-    protected void dataSourceProvided(DataSource dataSource, DataSourceConfig dsConfig) {
+    protected void doStartTx(Object delegate, boolean readOnly) {
+        DSTransactionManager.start();
+    }
+
+    @Override
+    protected void doRollbackTx(Object delegate, Throwable cause) {
+        try {
+            DSTransactionManager.rollback();
+        } catch (SQLException e) {
+            logger.warn(e, "Error rolling back transaction");
+        }
+    }
+
+    @Override
+    protected void doEndTxIfActive(Object delegate) {
+        if (!DSTransactionManager.inTrans()) {
+            return;
+        }
+        try {
+            DSTransactionManager.commit();
+        } catch (SQLException e) {
+            logger.warn(e, "Error commit transaction");
+        }
+    }
+
+    @Override
+    protected void dataSourceProvided(DataSource dataSource, DataSourceConfig dataSourceConfig, boolean readonly) {
         connectionSource = ConnectionSourceHelper.getSingle(dataSource);
-        DBStyle style = configureDbStyle(dsConfig);
+        DBStyle style = configureDbStyle(dataSourceConfig);
         SQLLoader loader = configureLoader();
         NameConversion nm = configureNamingConvention();
         Interceptor[] ins = configureInterceptor();
         beetlSql = new SQLManager(style, loader, connectionSource, nm, ins);
         beetlSql.setEntityLoader(app().classLoader());
-    }
-
-    @Override
-    protected DataSource createDataSource() {
-        throw E.unsupport("External datasource solution must be provided. E.g. hikaricp");
     }
 
     @Override
