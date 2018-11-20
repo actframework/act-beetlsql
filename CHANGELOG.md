@@ -1,5 +1,13 @@
 # Act BeetlSql Change Log
 
+1.5.5 - 20/Nov/2018
+* update act to 1.8.12
+* update beetlsql to 2.10.40
+
+1.5.4 - 04/Nov/2018
+* update act to 1.8.9
+* update act-sql-common to 1.4.4
+
 1.5.3 - 30/Oct/2018
 * update act to 1.8.8
 * update act-sql-common to 1.4.3
