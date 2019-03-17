@@ -29,17 +29,13 @@ import act.db.sql.util.NamingConvention;
 import org.beetl.sql.core.*;
 import org.beetl.sql.core.annotatoin.Table;
 import org.beetl.sql.core.db.*;
-import org.beetl.sql.core.mapper.BaseMapper;
-import org.beetl.sql.core.mapper.DefaultMapperBuilder;
-import org.beetl.sql.core.mapper.MapperJavaProxy;
+import org.beetl.sql.core.mapper.*;
 import org.beetl.sql.ext.DebugInterceptor;
-import org.osgl.$;
 import org.osgl.inject.Genie;
 import org.osgl.util.E;
 import org.osgl.util.S;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Proxy;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -55,6 +51,7 @@ public class BeetlSqlService extends SqlDbService {
     public static final String DEF_LOADER_PATH = "/sql";
 
     private SQLManager beetlSql;
+    private MapperBuilder mapperBuilder;
     private ConcurrentMap<Class, BaseMapper> mapperMap = new ConcurrentHashMap<>();
     private ConnectionSource connectionSource;
 
@@ -101,6 +98,7 @@ public class BeetlSqlService extends SqlDbService {
         Interceptor[] ins = configureInterceptor();
         beetlSql = new SQLManager(style, loader, connectionSource, nm, ins);
         beetlSql.setEntityLoader(app().classLoader());
+        mapperBuilder = new DefaultMapperBuilder(beetlSql);
     }
 
     @Override
@@ -136,11 +134,7 @@ public class BeetlSqlService extends SqlDbService {
     }
 
     public <MAPPER extends BaseMapper> void prepareMapperClass(Class<MAPPER> mapperClass, Class<?> modelClass) {
-        ClassLoader classLoader = app().classLoader();
-        Object o = Proxy.newProxyInstance(classLoader,
-                new Class<?>[]{mapperClass},
-                new MapperJavaProxy(new DefaultMapperBuilder(beetlSql, classLoader), beetlSql, mapperClass));
-        final MAPPER mapper = $.cast(o);
+        final MAPPER mapper = mapperBuilder.getMapper(mapperClass);
         mapperMap.put(mapperClass, mapper);
         mapperMap.put(modelClass, mapper);
         Genie genie = Act.getInstance(Genie.class);
