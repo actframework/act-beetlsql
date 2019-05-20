@@ -1,6 +1,11 @@
 # Act BeetlSql Change Log
 
-1.5.8 -
+
+1.5.9 - 20/May/2019
+* update act to 1.8.22
+* update beetlsql to 2.12.0.M1
+
+1.5.8 - 20/Apr/2019
 * update act to 1.8.20
 * update beetsql to 2.11.2
 * Simplify prepare mapper class logic in BeetlSqlService
