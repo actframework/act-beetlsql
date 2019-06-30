@@ -1,5 +1,11 @@
 # Act BeetlSql Change Log
 
+1.6.0
+* Add debug interceptor when running in Dev Mode #12
+* update to act-1.8.25
+* update to act-sql-common-1.5.0
+* update to beetsql-2.12.7.RELEASE
+
 1.5.11 - 21/Jun/2019
 * update to act-1.8.24
 * update to beetlsql-2.12.5.RELEASE

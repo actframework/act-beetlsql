@@ -167,11 +167,14 @@ public class BeetlSqlService extends SqlDbService {
     }
 
     private Interceptor[] configureInterceptor() {
-        String debug = this.config.rawConf.get("interceptor.debug");
-        if (null == debug) {
-            return new Interceptor[0];
+        boolean isDebug = Act.isDev();
+        if (!isDebug) {
+            String debug = this.config.rawConf.get("interceptor.debug");
+            if (null == debug) {
+                return new Interceptor[0];
+            }
+            isDebug = Boolean.parseBoolean(debug);
         }
-        boolean isDebug = Boolean.parseBoolean(debug);
         return isDebug ? new Interceptor[]{new DebugInterceptor()} : new Interceptor[0];
     }
 
