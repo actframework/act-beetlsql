@@ -29,12 +29,12 @@
   <parent>
     <groupId>org.actframework</groupId>
     <artifactId>parent</artifactId>
-    <version>1.8.25-SNAPSHOT</version>
+    <version>1.8.25</version>
   </parent>
 
   <properties>
     <git.url>git@github.com:actframework/act-beetlsql.git</git.url>
-    <act-sql-common.version>1.5.0-SNAPSHOT</act-sql-common.version>
+    <act-sql-common.version>1.5.0</act-sql-common.version>
     <beetlsql.version>2.12.7.RELEASE</beetlsql.version>
   </properties>
 
@@ -56,6 +56,12 @@
       <groupId>org.actframework</groupId>
       <artifactId>act-sql-common</artifactId>
       <version>${act-sql-common.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.antlr</groupId>
+          <artifactId>antlr4-runtime</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
   </dependencies>
