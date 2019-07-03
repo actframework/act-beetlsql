@@ -21,12 +21,16 @@ package act.db.beetlsql;
  */
 
 import act.app.App;
+import act.app.event.AppPreStart;
+import act.app.event.SysEventId;
 import act.db.DbPlugin;
 import act.db.DbService;
+import act.db.beetlsql.inject.BeetlSqlProviders;
 import act.db.sql.tx.TxError;
 import act.db.sql.tx.TxStart;
 import act.db.sql.tx.TxStop;
 import act.event.ActEventListenerBase;
+import act.event.SysEventListenerBase;
 import org.beetl.sql.core.DSTransactionManager;
 
 import java.util.EventObject;
@@ -57,6 +61,11 @@ public class BeetlSqlPlugin extends DbPlugin {
             public void on(TxError eventObject) throws Exception {
                 DSTransactionManager.rollback();
                 DSTransactionManager.clear();
+            }
+        }).bind(SysEventId.PRE_START, new SysEventListenerBase<AppPreStart>() {
+            @Override
+            public void on(AppPreStart event) {
+                BeetlSqlProviders.classInit(event.source());
             }
         });
     }
