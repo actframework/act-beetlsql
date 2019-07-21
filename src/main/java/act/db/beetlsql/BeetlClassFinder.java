@@ -56,8 +56,8 @@ public class BeetlClassFinder {
 
     @Inject
     public BeetlClassFinder(EntityClassRepository repo, App app) {
-        this.repo = $.notNull(repo);
-        this.app = $.notNull(app);
+        this.repo = $.requireNotNull(repo);
+        this.app = $.requireNotNull(app);
     }
 
     @AnnotatedClassFinder(Table.class)
@@ -72,6 +72,10 @@ public class BeetlClassFinder {
 
     @SubClassFinder(noAbstract = false, callOn = SysEventId.PRE_START)
     public void foundMapper(Class<? extends BaseMapper> mapperClass) {
+        if (mapperClass.getName().startsWith("org.beetl.sql.test.")) {
+            // beetlsql-2.12.9.RELEASE package test classes into the release jar; let's get rid it
+            return;
+        }
         DbServiceManager dbServiceManager = app.dbServiceManager();
         try {
             Class<?> modelClass = modelClass(mapperClass);

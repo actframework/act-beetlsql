@@ -24,6 +24,7 @@ import act.Act;
 import act.app.App;
 import act.db.Dao;
 import act.db.sql.DataSourceConfig;
+import act.db.sql.DataSourceProvider;
 import act.db.sql.SqlDbService;
 import act.db.sql.util.NamingConvention;
 import org.beetl.sql.core.*;
@@ -61,6 +62,11 @@ public class BeetlSqlService extends SqlDbService {
 
     public SQLManager beetlSql() {
         return beetlSql;
+    }
+
+    @Override
+    protected DataSourceProvider builtInDataSourceProvider() {
+        throw E.unsupport();
     }
 
     @Override
