@@ -55,15 +55,7 @@ public class BeetlSqlDao<ID_TYPE, MODEL_TYPE> extends DaoBase<ID_TYPE, MODEL_TYP
 
   @Override
   public ID_TYPE getId(MODEL_TYPE entity) {
-    String tableName = this.sqlManager.getNc().getTableName(this.modelType());
-    TableDesc tableDesc = this.sqlManager.getMetaDataManager().getTable(tableName);
-    ClassDesc classDesc = tableDesc.getClassDesc(this.sqlManager.getNc());
-    List<String> idNames = classDesc.getIdAttrs();
-    if(idNames.size()>1){
-      //TODO 以后支持复合主健
-      throw new IllegalStateException("BeetlSQL 目前不支持在ACT中使用复合主健");
-    }
-    String idAttr = idNames.get(0);
+
     ID_TYPE value = (ID_TYPE)BeanKit.getBeanProperty(entity,idAttr);
     return value;
   }
