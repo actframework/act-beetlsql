@@ -37,6 +37,7 @@ import org.osgl.util.E;
 import org.osgl.util.S;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -114,13 +115,40 @@ public class BeetlSqlService extends SqlDbService {
 
     @Override
     public <DAO extends Dao> DAO defaultDao(Class<?> aClass) {
-        throw E.unsupport("BeetlSql does not support DAO. Please use mapper instead");
+		String tableName = this.beetlSql.getNc().getTableName(aClass);
+		TableDesc tableDesc = this.beetlSql.getMetaDataManager().getTable(tableName);
+		ClassDesc classDesc = tableDesc.getClassDesc(this.beetlSql.getNc());
+		Map<String ,Object> idMethod =(Map<String , Object>) classDesc.getIdMethods();
+		if(idMethod.size()>1){
+			throw new IllegalStateException("BeetlSQL 目前不支持在ACT中使用复合主健");
+		}
+
+		Class idType = null;
+		String idAttr = null;
+		for(Map.Entry<String,Object> entry:idMethod.entrySet()){
+			idAttr = entry.getKey();
+			Method method = (Method) entry.getValue();
+			idType = method.getReturnType();
+			break;
+
+		}
+		return (DAO)newDao(idAttr,idType,aClass);
+
+
     }
+
+	protected <ID_TYPE, MODEL_TYPE> BeetlSqlDao<ID_TYPE, MODEL_TYPE> newDao(String idAttr,Class<ID_TYPE> idType, Class<MODEL_TYPE> modelType) {
+		return new BeetlSqlDao<>(this.beetlSql,idAttr,modelType,idType);
+	}
 
     @Override
     public <DAO extends Dao> DAO newDaoInstance(Class<DAO> aClass) {
-        throw E.unsupport("BeetlSql does not support DAO. Please use mapper instead");
-    }
+		try {
+			return (DAO)aClass.newInstance();
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
+		}
+	}
 
     @Override
     public Class<? extends Annotation> entityAnnotationType() {
