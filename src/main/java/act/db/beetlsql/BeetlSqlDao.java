@@ -1,19 +1,36 @@
 package act.db.beetlsql;
 
+/*-
+ * #%L
+ * ACT Beetlsql
+ * %%
+ * Copyright (C) 2017 - 2019 ActFramework
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import act.db.DaoBase;
 import org.beetl.sql.core.SQLManager;
 import org.beetl.sql.core.SQLReady;
-import org.beetl.sql.core.db.ClassDesc;
-import org.beetl.sql.core.db.TableDesc;
 import org.beetl.sql.core.kit.BeanKit;
-import org.beetl.sql.test.BaseDao;
 
 import java.util.*;
 
 
 public class BeetlSqlDao<ID_TYPE, MODEL_TYPE> extends DaoBase<ID_TYPE, MODEL_TYPE, BeetlSqlQuery<MODEL_TYPE>> {
-  SQLManager sqlManager = null;
-  Class targetType = null;
+  SQLManager sqlManager;
+  Class targetType;
   String idAttr ;
   public BeetlSqlDao(SQLManager sqlManager,String idAttr,Class<MODEL_TYPE> modelType,Class<ID_TYPE> idType){
     super(idType,modelType);
