@@ -117,7 +117,7 @@ public class BeetlSqlService extends SqlDbService {
     public <DAO extends Dao> DAO defaultDao(Class<?> aClass) {
 		String tableName = this.beetlSql.getNc().getTableName(aClass);
 		TableDesc tableDesc = this.beetlSql.getMetaDataManager().getTable(tableName);
-		ClassDesc classDesc = tableDesc.getClassDesc(this.beetlSql.getNc());
+		ClassDesc classDesc = tableDesc.getClassDesc(aClass,this.beetlSql.getNc());
 		Map<String ,Object> idMethod =(Map<String , Object>) classDesc.getIdMethods();
 		if(idMethod.size()>1){
 			throw new IllegalStateException("BeetlSQL 目前不支持在ACT中使用复合主健");
