@@ -1,5 +1,10 @@
 # Act BeetlSql Change Log
 
+1.8.0 - 03/Nov/2019
+* update act to 1.8.29
+* update beetlsql to 2.12.16.RELEASE
+* support act-db Dao (experimental)
+
 1.7.1 - 15/Jul/2019
 * update act to 1.8.27
 * update beetlsql to 2.12.12.RELEASE

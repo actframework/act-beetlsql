@@ -96,7 +96,7 @@ public class BeetlSqlDao<ID_TYPE, MODEL_TYPE> extends DaoBase<ID_TYPE, MODEL_TYP
 
     @Override
     public MODEL_TYPE save(MODEL_TYPE entity) {
-        sqlManager.insert(entity, true);
+        sqlManager.upsert(entity);
         return entity;
     }
 
