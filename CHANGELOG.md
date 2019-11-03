@@ -1,5 +1,9 @@
 # Act BeetlSql Change Log
 
+1.7.1 - 15/Jul/2019
+* update act to 1.8.27
+* update beetlsql to 2.12.12.RELEASE
+
 1.7.0 - 21/Jul/2019
 * Allow inject SQLManager #13
 * update act to 1.8.26

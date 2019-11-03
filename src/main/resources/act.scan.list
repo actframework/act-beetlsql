@@ -1,3 +1,4 @@
 act.db.beetlsql.BeetlClassFinder
 act.db.beetlsql.BeetlSqlModule
 act.db.beetlsql.BeetlSqlTransactional
+act.db.beetlsql.inject.BeetlSqlProviders

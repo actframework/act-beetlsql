@@ -9,9 +9,9 @@ package act.db.beetlsql;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -115,40 +115,40 @@ public class BeetlSqlService extends SqlDbService {
 
     @Override
     public <DAO extends Dao> DAO defaultDao(Class<?> aClass) {
-		String tableName = this.beetlSql.getNc().getTableName(aClass);
-		TableDesc tableDesc = this.beetlSql.getMetaDataManager().getTable(tableName);
-		ClassDesc classDesc = tableDesc.getClassDesc(aClass,this.beetlSql.getNc());
-		Map<String ,Object> idMethod =(Map<String , Object>) classDesc.getIdMethods();
-		if(idMethod.size()>1){
-			throw new IllegalStateException("BeetlSQL 目前不支持在ACT中使用复合主健");
-		}
+        String tableName = this.beetlSql.getNc().getTableName(aClass);
+        TableDesc tableDesc = this.beetlSql.getMetaDataManager().getTable(tableName);
+        ClassDesc classDesc = tableDesc.getClassDesc(aClass, this.beetlSql.getNc());
+        Map<String, Object> idMethod = (Map<String, Object>) classDesc.getIdMethods();
+        if (idMethod.size() > 1) {
+            throw new IllegalStateException("BeetlSQL 目前不支持在ACT中使用复合主健");
+        }
 
-		Class idType = null;
-		String idAttr = null;
-		for(Map.Entry<String,Object> entry:idMethod.entrySet()){
-			idAttr = entry.getKey();
-			Method method = (Method) entry.getValue();
-			idType = method.getReturnType();
-			break;
+        Class idType = null;
+        String idAttr = null;
+        for (Map.Entry<String, Object> entry : idMethod.entrySet()) {
+            idAttr = entry.getKey();
+            Method method = (Method) entry.getValue();
+            idType = method.getReturnType();
+            break;
 
-		}
-		return (DAO)newDao(idAttr,idType,aClass);
+        }
+        return (DAO) newDao(idAttr, idType, aClass);
 
 
     }
 
-	protected <ID_TYPE, MODEL_TYPE> BeetlSqlDao<ID_TYPE, MODEL_TYPE> newDao(String idAttr,Class<ID_TYPE> idType, Class<MODEL_TYPE> modelType) {
-		return new BeetlSqlDao<>(this.beetlSql,idAttr,modelType,idType);
-	}
+    protected <ID_TYPE, MODEL_TYPE> BeetlSqlDao<ID_TYPE, MODEL_TYPE> newDao(String idAttr, Class<ID_TYPE> idType, Class<MODEL_TYPE> modelType) {
+        return new BeetlSqlDao<>(this.beetlSql, idAttr, modelType, idType);
+    }
 
     @Override
     public <DAO extends Dao> DAO newDaoInstance(Class<DAO> aClass) {
-		try {
-			return (DAO)aClass.newInstance();
-		} catch (Exception e) {
-			throw new IllegalStateException(e);
-		}
-	}
+        try {
+            return (DAO) aClass.newInstance();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
 
     @Override
     public Class<? extends Annotation> entityAnnotationType() {
