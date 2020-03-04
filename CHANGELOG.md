@@ -1,5 +1,9 @@
 # Act BeetlSql Change Log
 
+1.8.2 - 04/Mar/2020
+* update act to 1.8.32
+* updte beetlsql to 2.12.20.RELEASE
+
 1.8.1 - 02/Jan/2020
 * update act to 1.8.31
 * update beetlsql to 2.12.17.RELEASE
